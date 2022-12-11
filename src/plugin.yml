@@ -1,0 +1,4 @@
+name: NomadSurvial
+version: '1.0'
+main: game.NomadSurvival
+api-version: 1.19
