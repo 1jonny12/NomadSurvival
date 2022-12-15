@@ -2,7 +2,6 @@ package game.Undead;
 
 import com.google.common.collect.Sets;
 import core.utils.Task;
-import game.Undead.Brain;
 import net.minecraft.world.entity.EntityInsentient;
 import net.minecraft.world.entity.EntityLiving;
 import net.minecraft.world.entity.ai.goal.PathfinderGoalSelector;
@@ -10,61 +9,53 @@ import net.minecraft.world.entity.ai.navigation.NavigationAbstract;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftEntity;
-import org.bukkit.entity.Husk;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.EntityEquipment;
 
 import java.lang.reflect.Field;
 
-public abstract class Undead {
+public class Undead {
 
+
+    private final UndeadBehaviour undeadBehaviour = new UndeadBehaviour(this);
     private NavigationAbstract nav;
     private Task tickTask;
     private LivingEntity bukkitEntity;
     private EntityInsentient entityInsentient;
-    private final Brain brain = new Brain(this);
     private boolean isSpawned = false;
-    private String name;
-    private int nextAttackDelay = 10;
-
-    private double entitySpeed = 0;
 
     {
         startEntityTick();
-        entitySpeed = getDefaultSpeed();
     }
 
-    public void baseTickEntity(){
+    public void baseTickEntity() {
         if (isSpawned) {
-            bukkitEntity.setCustomName(name);
+            bukkitEntity.setCustomName("Zombie");
             if (bukkitEntity.isDead()) {
                 killAndUnload();
                 return;
             }
         }
 
-        brain.tick();
-        tickEntity();
+        undeadBehaviour.tickBehaviour();
+
+
     }
 
-    public abstract void tickEntity();
-
-    public abstract double getDefaultSpeed();
-
-    public void damageReceived(LivingEntity damager){
-        attackLivingEntity(damager);
+    public double getAttackReach() {
+        return 2;
     }
 
-    public void attackLivingEntity(LivingEntity livingEntity){
-        brain.setAttackEntity(livingEntity);
+    public void damageReceived(LivingEntity damager) {
+        undeadBehaviour.setAttackTarget(damager);
     }
 
     private void startEntityTick() {
-            tickTask = Task.repeat(20, this::baseTickEntity);
+        tickTask = Task.repeat(2, this::baseTickEntity);
     }
 
     public void spawn(Location spawnLocation) {
-        bukkitEntity = spawnLocation.getWorld().spawn(spawnLocation, Husk.class, consumerZombie -> {
+        bukkitEntity = spawnLocation.getWorld().spawn(spawnLocation, Zombie.class, consumerZombie -> {
             consumerZombie.setAdult();
             consumerZombie.setCustomNameVisible(true);
             consumerZombie.setCanPickupItems(false);
@@ -79,7 +70,6 @@ public abstract class Undead {
                 equip.setItemInMainHandDropChance(0f);
             }
         });
-
 
 
         isSpawned = true;
@@ -122,51 +112,27 @@ public abstract class Undead {
         nav.a(x, y, z, speed);
     }
 
-    public void lookAt(LivingEntity livingentity) {
+    public void lookAt(LivingEntity livingentity, float lookSpeed) {
         EntityLiving entityLiving = (EntityLiving) ((CraftEntity) livingentity).getHandle();
-        entityInsentient.z().a(entityLiving, 30.0F, 30.0F);
+        entityInsentient.z().a(entityLiving, lookSpeed, lookSpeed);
     }
 
+    public double distanceFrom(LivingEntity livingEntity) {
+        return distanceFrom(livingEntity.getLocation());
+    }
+
+    public double distanceFrom(Location from) {
+        return from.distance(bukkitEntity.getLocation());
+    }
     public double distanceSQRFrom(LivingEntity livingEntity) {
-        return distanceSQRFrom(livingEntity.getLocation());
+        return distanceFrom(livingEntity.getLocation());
     }
-
-    public double distanceSQRFrom(Location from) {
-        return from.distanceSquared(bukkitEntity.getLocation());
-    }
-
-    public double distanceSQRFromExcludeY(LivingEntity livingEntity) {
-        return distanceSQRFrom(livingEntity.getLocation());
-    }
-
-    public double distanceSQRFromExcludeY(Location from) {
-        Location to = bukkitEntity.getLocation();
-        double x = to.getX() - from.getX();
-        double z = to.getZ() - from.getZ();
-        return x * x + z * z;
-    }
-
-
 
     //------------------------------------------------------------------------------------------------------------------------------
     // ##############################################################################################################################
     // Default - Getters and Setters
     //##############################################################################################################################
     //------------------------------------------------------------------------------------------------------------------------------
-
-
-    public Brain getBrain() {
-        return brain;
-    }
-
-    public int getNextAttackDelay() {
-        return nextAttackDelay;
-    }
-
-    public void setNextAttackDelay(int nextAttackDelay) {
-        this.nextAttackDelay = nextAttackDelay;
-    }
-
 
     public Task getTickTask() {
         return tickTask;
@@ -180,20 +146,8 @@ public abstract class Undead {
         return bukkitEntity;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public EntityInsentient getEntityInsentient() {
         return entityInsentient;
-    }
-
-    public double getEntitySpeed() {
-        return entitySpeed;
     }
 
 }

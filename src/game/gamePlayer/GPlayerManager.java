@@ -1,6 +1,8 @@
-package core.gamePlayer;
+package game.gamePlayer;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.HashMap;
@@ -32,6 +34,15 @@ public class GPlayerManager {
     public void handleLogout(PlayerQuitEvent e) {
         saveGPlayer(e.getPlayer());
         LOADED_G_PLAYER.remove(e.getPlayer().getUniqueId());
+    }
+
+    public void handleLogin(PlayerJoinEvent e) {
+       getGPlayer(e.getPlayer());
+    }
+
+
+    public void handlePlayerMove(PlayerMoveEvent e){
+        forAllGPlayer((gPlayer) -> gPlayer.managePlayerMovingState(e));
     }
 
     public void forAllGPlayer(ForAllGPlayer forAllGPlayer){

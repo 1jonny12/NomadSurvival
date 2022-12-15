@@ -1,7 +1,7 @@
 package core.scoreboard;
 
-import PrisonPlayers.PrisonPlayer;
 import core.utils.Util;
+import game.gamePlayer.GPlayer;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -18,9 +18,9 @@ public abstract class SBoard {
 
     public abstract int getLineCount();
 
-    public abstract void updateScoreBoardSideBarStanding(PrisonPlayer pp, Scoreboard scoreboard);
+    public abstract void updateScoreBoardSideBarStanding(GPlayer gPlayer, Scoreboard scoreboard);
 
-    public abstract void updateScoreBoardSideBarSneaking(PrisonPlayer pp, Scoreboard scoreboard);
+    public abstract void updateScoreBoardSideBarSneaking(GPlayer gPlayer, Scoreboard scoreboard);
 
     public abstract void updateNames(Scoreboard scoreboard);
 

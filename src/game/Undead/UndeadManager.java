@@ -6,25 +6,16 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import java.lang.reflect.InvocationTargetException;
-
 public class UndeadManager {
 
     private final UndeadSpawnController spawnController = new UndeadSpawnController(this);
     private final UndeadTracker undeadTracker = new UndeadTracker();
 
 
-    public void spawnUndead(UndeadType undeadType, Location location){
-
-        try {
-            Undead undead = undeadType.getUndeadType().getDeclaredConstructor().newInstance();
-            undead.spawn(location);
-            undeadTracker.addUndead(undead);
-        }
-        catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-
+    public void spawnUndead(Location location) {
+        Undead undead = new Undead();
+        undead.spawn(location);
+        undeadTracker.addUndead(undead);
     }
 
     public void HandleDamageEvent(EntityDamageByEntityEvent e) {

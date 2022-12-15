@@ -8,7 +8,7 @@
 package core.commandBuilder;
 
 import game.NomadSurvival;
-import core.gamePlayer.GPlayer;
+import game.gamePlayer.GPlayer;
 import core.utils.Util;
 import core.commandBuilder.Arg.ArgBase;
 import core.commandBuilder.Arg.CoreArgs.Arg_PlayerByName;

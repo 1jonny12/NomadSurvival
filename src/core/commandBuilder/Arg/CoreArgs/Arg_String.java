@@ -8,7 +8,7 @@
 package core.commandBuilder.Arg.CoreArgs;
 
 import core.commandBuilder.Arg.ArgBase;
-import core.gamePlayer.GPlayer;
+import game.gamePlayer.GPlayer;
 
 public class Arg_String extends ArgBase {
 

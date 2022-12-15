@@ -1,10 +1,10 @@
 package core.scoreboard;
 
-import PrisonPlayers.PrisonPlayer;
-import RPGPRISON.RpgPrison;
 import core.utils.Task;
 import core.utils.Util;
 import core.scoreboard.Boards.Board_Main;
+import game.NomadSurvival;
+import game.gamePlayer.GPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -47,11 +47,11 @@ public class ScoreBoardManager {
 
 
     private void updateScoreBoard() {
-        Task.repeat(20, () -> {
+        Task.repeat(3, () -> {
             GenericFlip = !GenericFlip;
 
             for (Player p : Bukkit.getOnlinePlayers()) {
-                PrisonPlayer pp = RpgPrison.PRISON_PLAYER_MANAGER.getPrisonPlayer(p);
+                GPlayer gPlayer = NomadSurvival.G_PLAYER_MANAGER.getGPlayer(p);
                 String assignedBoardType = playersAssignedBoard.get(p.getUniqueId());
 
                 if (assignedBoardType == null) {
@@ -79,10 +79,10 @@ public class ScoreBoardManager {
                     }
 
                     if (p.isSneaking()){
-                        playersAssignedBoard.updateScoreBoardSideBarSneaking(pp, currentBoard.getScoreboard());
+                        playersAssignedBoard.updateScoreBoardSideBarSneaking(gPlayer, currentBoard.getScoreboard());
 
                     }else {
-                        playersAssignedBoard.updateScoreBoardSideBarStanding(pp, currentBoard.getScoreboard());
+                        playersAssignedBoard.updateScoreBoardSideBarStanding(gPlayer, currentBoard.getScoreboard());
                     }
 
                     playersAssignedBoard.updateNames(currentBoard.getScoreboard());

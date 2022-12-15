@@ -8,7 +8,7 @@
 package core.commandBuilder;
 
 import core.commandBuilder.Arg.ArgBase;
-import core.gamePlayer.GPlayer;
+import game.gamePlayer.GPlayer;
 import org.bukkit.command.ConsoleCommandSender;
 
 public class ExecutorBase {

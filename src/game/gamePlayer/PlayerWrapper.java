@@ -1,4 +1,4 @@
-package core.gamePlayer;
+package game.gamePlayer;
 
 import core.utils.Util;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -16,6 +16,9 @@ public class PlayerWrapper extends CraftPlayer {
     public Entity spawnEntityAtPlayer(EntityType entityType){
         return getWorld().spawnEntity(getLocation(), entityType);
     }
+
+
+
 
     @Override
     public void sendMessage(String message) {

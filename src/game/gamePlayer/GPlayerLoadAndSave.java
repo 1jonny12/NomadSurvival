@@ -1,4 +1,4 @@
-package core.gamePlayer;
+package game.gamePlayer;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import core.utils.Util;

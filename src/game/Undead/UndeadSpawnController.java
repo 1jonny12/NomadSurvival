@@ -34,17 +34,14 @@ public class UndeadSpawnController {
     public void attemptSpawn(Player p) {
         int entityCountAroundPlayer = 0;
 
-        Bukkit.broadcastMessage("1");
-
         for (Entity entity : p.getNearbyEntities(150, 150, 150)) {
             if (entity instanceof Zombie) entityCountAroundPlayer++;
         }
 
-        if (entityCountAroundPlayer < 10) {
-            Bukkit.broadcastMessage("2");
+        if (entityCountAroundPlayer < 1) {
             Location spawnLocation = getRandomSpawnLocation(p);
 
-            if (spawnLocation != null) undeadManager.spawnUndead(UndeadType.BASIC, spawnLocation);
+            if (spawnLocation != null) undeadManager.spawnUndead(spawnLocation);
         }
     }
 

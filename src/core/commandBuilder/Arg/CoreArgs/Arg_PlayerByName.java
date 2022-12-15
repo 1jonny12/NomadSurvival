@@ -9,7 +9,7 @@ package core.commandBuilder.Arg.CoreArgs;
 
 
 import game.NomadSurvival;
-import core.gamePlayer.GPlayer;
+import game.gamePlayer.GPlayer;
 import core.commandBuilder.Arg.ArgBase;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;

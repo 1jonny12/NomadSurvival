@@ -7,7 +7,7 @@
 
 package core.commandBuilder.Arg;
 
-import core.gamePlayer.GPlayer;
+import game.gamePlayer.GPlayer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
