@@ -2,8 +2,8 @@ package game.gamePlayer;
 
 import core.utils.Util;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_19_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -16,9 +16,6 @@ public class PlayerWrapper extends CraftPlayer {
     public Entity spawnEntityAtPlayer(EntityType entityType){
         return getWorld().spawnEntity(getLocation(), entityType);
     }
-
-
-
 
     @Override
     public void sendMessage(String message) {

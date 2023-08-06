@@ -7,6 +7,12 @@
 
 package core.builders.gui;
 
+import org.bukkit.Bukkit;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
+
+import java.util.UUID;
+
 public record GUI_Holder(UUID guiID) implements InventoryHolder {
 
     //----------------------------------------------------

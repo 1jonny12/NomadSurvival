@@ -2,26 +2,27 @@ package game.Undead;
 
 import com.google.common.collect.Sets;
 import core.utils.Task;
-import net.minecraft.world.entity.EntityInsentient;
-import net.minecraft.world.entity.EntityLiving;
-import net.minecraft.world.entity.ai.goal.PathfinderGoalSelector;
-import net.minecraft.world.entity.ai.navigation.NavigationAbstract;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.GoalSelector;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_19_R1.entity.CraftEntity;
-import org.bukkit.entity.*;
+import org.bukkit.craftbukkit.v1_19_R3.entity.CraftEntity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.EntityEquipment;
 
 import java.lang.reflect.Field;
 
 public class Undead {
 
-
     private final UndeadBehaviour undeadBehaviour = new UndeadBehaviour(this);
-    private NavigationAbstract nav;
+    private PathNavigation nav;
     private Task tickTask;
     private LivingEntity bukkitEntity;
-    private EntityInsentient entityInsentient;
+    private Mob nmsMob;
     private boolean isSpawned = false;
 
     {
@@ -38,8 +39,6 @@ public class Undead {
         }
 
         undeadBehaviour.tickBehaviour();
-
-
     }
 
     public double getAttackReach() {
@@ -47,7 +46,7 @@ public class Undead {
     }
 
     public void damageReceived(LivingEntity damager) {
-        undeadBehaviour.setAttackTarget(damager);
+        undeadBehaviour.target(damager);
     }
 
     private void startEntityTick() {
@@ -73,17 +72,17 @@ public class Undead {
 
 
         isSpawned = true;
-        entityInsentient = ((EntityInsentient) ((CraftEntity) bukkitEntity).getHandle());
-        nav = entityInsentient.D();
+        nmsMob = ((Mob) ((CraftEntity) bukkitEntity).getHandle());
+        nav = nmsMob.getNavigation();
         ClearAllGoals();
     }
 
     private void ClearAllGoals() {
         try {
-            final Field bField = PathfinderGoalSelector.class.getDeclaredField("d");
+            final Field bField = GoalSelector.class.getDeclaredField("availableGoals");
             bField.setAccessible(true);
-            bField.set(entityInsentient.bS, Sets.newLinkedHashSet());
-            bField.set(entityInsentient.bT, Sets.newLinkedHashSet());
+            bField.set(nmsMob.goalSelector, Sets.newLinkedHashSet());
+            bField.set(nmsMob.targetSelector, Sets.newLinkedHashSet());
         } catch (final Exception exc) {
             exc.printStackTrace();
         }
@@ -96,25 +95,32 @@ public class Undead {
         Bukkit.broadcastMessage("KILL AND UNLOAD");
     }
 
-    public boolean isNotNavigating() {
-        return !nav.m();
+    public boolean isNavigating() {
+        return nav.isInProgress();
     }
 
     public void stopNavigation() {
-        nav.n();
+        nav.stop();
     }
 
-    public void pathTo(Location location, double speed) {
-        pathTo(location.getX(), location.getY(), location.getZ(), speed);
+    public void pathTo(Vec3 position, double speed) {
+        pathTo(position.x(), position.y(),  position.z(), speed);
     }
 
     public void pathTo(double x, double y, double z, double speed) {
-        nav.a(x, y, z, speed);
+        nav.moveTo(x, y, z, speed);
+    }
+
+    public void pathTo(LivingEntity target, double speed) {
+        nav.moveTo((Entity) target, speed);
     }
 
     public void lookAt(LivingEntity livingentity, float lookSpeed) {
-        EntityLiving entityLiving = (EntityLiving) ((CraftEntity) livingentity).getHandle();
-        entityInsentient.z().a(entityLiving, lookSpeed, lookSpeed);
+        nmsMob.getLookControl().setLookAt(((CraftEntity) livingentity).getHandle(), lookSpeed, lookSpeed);
+    }
+
+    public void lookAt(double x, double y, double z, float lookSpeed) {
+        nmsMob.getLookControl().setLookAt(x, y, z, lookSpeed, lookSpeed);
     }
 
     public double distanceFrom(LivingEntity livingEntity) {
@@ -124,6 +130,7 @@ public class Undead {
     public double distanceFrom(Location from) {
         return from.distance(bukkitEntity.getLocation());
     }
+
     public double distanceSQRFrom(LivingEntity livingEntity) {
         return distanceFrom(livingEntity.getLocation());
     }
@@ -146,8 +153,11 @@ public class Undead {
         return bukkitEntity;
     }
 
-    public EntityInsentient getEntityInsentient() {
-        return entityInsentient;
+    public Mob getNmsMob() {
+        return nmsMob;
     }
 
+    public UndeadBehaviour getUndeadBehaviour() {
+        return undeadBehaviour;
+    }
 }

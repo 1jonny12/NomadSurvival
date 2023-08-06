@@ -38,7 +38,7 @@ public class ScoreBoardManager {
     public void assignBoardToPlayer(Scoreboard scoreboard, Player p) {
         String boardId = scoreboard.getBoardID();
         if (!scoreBoards.containsKey(boardId)) {
-            Util.ERROR_REPORTER.report("Unable to assign board " + boardId + ", There is no board registered with that ID");
+            Util.ERROR_REPORTER.reportToConsole("Unable to assign board " + boardId + ", There is no board registered with that ID");
             return;
         }
 

@@ -8,7 +8,6 @@
 package core.builders.gui;
 
 
-import RPGPRISON.RpgPrison;
 import core.utils.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -72,7 +71,7 @@ public class GUI_Creator {
         }
 
         GUI gui = new GUI(inventory, items);
-        RpgPrison.GUI_BUILDER_MANAGER.registerGUI(guiID, gui);
+        Util.GUI_BUILDER_MANAGER.registerGUI(guiID, gui);
         return gui;
     }
 

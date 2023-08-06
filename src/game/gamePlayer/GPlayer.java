@@ -2,6 +2,7 @@ package game.gamePlayer;
 
 import core.utils.Task;
 import core.utils.Util;
+import net.minecraft.network.protocol.Packet;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -28,10 +29,10 @@ public class GPlayer extends PlayerWrapper {
 
     PlayerMovingState playerMovingState = PlayerMovingState.STANDING_STILL;
     private long firstJoinTimestamp;
-    Noise noise = new Noise();
-    private double maxSmell = 100;
+    private Noise noise = new Noise();
+    private static final double maxSmell = 100;
     private double smell = 0;
-
+    private boolean undeadNameActivityEnabled = true;
 
 
     private void startGPlayerTick() {
@@ -57,6 +58,8 @@ public class GPlayer extends PlayerWrapper {
 
     public void updatePlayerSmell(){
         double change = 0.001;
+
+        //Update smell due to movement.
         switch (playerMovingState){
             case SNEAK_WALKING -> change = 0.01;
             case WALKING -> change = 0.02;
@@ -88,11 +91,23 @@ public class GPlayer extends PlayerWrapper {
 
     }
 
+    public void sendPacket(Packet<?> packet){
+       this.getHandle().connection.send(packet);
+    }
+
 
     //----------------------------------------------------
     // [Default] -> Getters and Setters
     //----------------------------------------------------
 
+
+    public boolean isUndeadNameActivityEnabled() {
+        return undeadNameActivityEnabled;
+    }
+
+    public void setUndeadNameActivityEnabled(boolean undeadNameActivityEnabled) {
+        this.undeadNameActivityEnabled = undeadNameActivityEnabled;
+    }
 
     public double getSmell() {
         return smell;

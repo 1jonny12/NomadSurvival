@@ -7,11 +7,12 @@
 
 package core.builders;
 
-import RPGPRISON.RpgPrison;
+import core.nbtTag.NbtManager;
+import core.nbtTag.NbtTagValued;
+import core.nbtTag.NbtTag_Identifier;
 import core.utils.Util;
-import core.nbtTags.NbtManager;
-import core.nbtTags.NbtTagValued;
-import core.nbtTags.NbtTag_Identifier;
+
+import game.NomadSurvival;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
@@ -69,7 +70,7 @@ public class ItemBuilder {
             }
         }
 
-        NbtManager nbtManager = RpgPrison.NBT_MANAGER;
+        NbtManager nbtManager = Util.NBT_MANAGER;
 
         if (nbtManager.hasTag(itemStack, NO_GROUND_PICKUP_NBT)){
             NoGroundPickup = true;
@@ -141,7 +142,7 @@ public class ItemBuilder {
         }
 
         if (nbtTagsToAdd.size() > 0) {
-            RpgPrison.NBT_MANAGER.AddTagS(itemStack, nbtTagsToAdd);
+           // Util.NBT_MANAGER.AddTagS(itemStack, nbtTagsToAdd);
         }
 
 
