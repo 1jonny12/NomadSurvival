@@ -41,6 +41,7 @@ public class ItemBuilder {
     private Material material;
     private String displayName = "";
     private ArrayList<String> lore = new ArrayList<>();
+    private int modelData = 0;
 
     private boolean NotStackable = false;
     private boolean NoGroundPickup = false;
@@ -120,6 +121,7 @@ public class ItemBuilder {
             String name = Util.STRING.formatString(displayName);
             itemMeta.setDisplayName(name);
 
+            itemMeta.setCustomModelData(modelData);
             itemMeta.setUnbreakable(true);
             itemMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
             itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -127,6 +129,10 @@ public class ItemBuilder {
             itemMeta.addItemFlags(ItemFlag.HIDE_PLACED_ON);
             itemMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
             itemMeta.addItemFlags(ItemFlag.HIDE_DYE);
+
+            if (!nbtTagsToAdd.isEmpty()) {
+                Util.NBT_MANAGER.AddTags(itemMeta, nbtTagsToAdd);
+            }
 
             itemStack.setItemMeta(itemMeta);
         }
@@ -141,9 +147,7 @@ public class ItemBuilder {
             }
         }
 
-        if (nbtTagsToAdd.size() > 0) {
-           // Util.NBT_MANAGER.AddTagS(itemStack, nbtTagsToAdd);
-        }
+
 
 
         return itemStack;
@@ -246,8 +250,13 @@ public class ItemBuilder {
         return setLeatherArmorColor_RGB(color.getRed(), color.getGreen(), color.getBlue());
     }
 
-    public void setMaterial(Material material) {
+    public ItemBuilder setMaterial(Material material) {
         this.material = material;
+        return this;
     }
 
+    public ItemBuilder setModelData(int modelData) {
+        this.modelData = modelData;
+        return this;
+    }
 }

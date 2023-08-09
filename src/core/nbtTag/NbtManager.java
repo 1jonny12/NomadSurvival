@@ -8,6 +8,8 @@
 package core.nbtTag;
 
 import game.NomadSurvival;
+import jline.internal.Nullable;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -24,7 +26,6 @@ public class NbtManager {
     public void AddTag(ItemMeta itemMeta, NbtTagValued nbtTagValued) {
         PersistentDataContainer persistentDataContainer = itemMeta.getPersistentDataContainer();
         persistentDataContainer.set(new NamespacedKey(NomadSurvival.PLUGIN, nbtTagValued.uniqueIdentifier()), nbtTagValued.getPersistentDataType(), nbtTagValued.data());
-
     }
 
     public boolean hasTag(ItemStack itemStack, NbtTag nbtTag) {
@@ -34,9 +35,15 @@ public class NbtManager {
        return persistentDataContainer.has(new NamespacedKey(NomadSurvival.PLUGIN, nbtTag.uniqueIdentifier()), nbtTag.getPersistentDataType());
     }
 
-    public Object hasTagValue(ItemStack itemStack, NbtTag nbtTag) {
-        return null;
+    @Nullable
+    public Object getTag(ItemStack itemStack, NbtTag nbtTag) {
+        if (itemStack.getItemMeta() == null) {
+            Bukkit.broadcastMessage("getTag():nbtmanager - itemmeta is null");
+            return null;
+        }
+        PersistentDataContainer dataContainer = itemStack.getItemMeta().getPersistentDataContainer();
+        Bukkit.broadcastMessage(dataContainer.getKeys().toString());
+        return dataContainer.get(new NamespacedKey(NomadSurvival.PLUGIN, nbtTag.uniqueIdentifier()), nbtTag.getPersistentDataType());
     }
-
 
 }

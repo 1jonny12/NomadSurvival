@@ -1,14 +1,17 @@
 package game.gamePlayer;
 
+import core.jcommandbuilder.JTabProvider;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
-public class GPlayerManager {
+public class GPlayerManager implements JTabProvider {
     private static final HashMap<UUID, GPlayer> LOADED_G_PLAYER = new HashMap<>();
 
     public GPlayer getGPlayer(Player p){
@@ -49,6 +52,13 @@ public class GPlayerManager {
          for (GPlayer gPlayer : LOADED_G_PLAYER.values()){
              forAllGPlayer.run(gPlayer);
          }
+    }
+
+    @Override
+    public List<String> getTabs() {
+        List<String> tabs = new ArrayList<>();
+        forAllGPlayer(gPlayer -> tabs.add(gPlayer.getName()));
+        return tabs;
     }
 
     public interface ForAllGPlayer{

@@ -3,6 +3,7 @@ package game;
 import core.scoreboard.ScoreBoardManager;
 import game.ResourcePack.ResourcePackManager;
 import game.commands.CommandRegister;
+import game.customitems.CustomItemManager;
 import game.gamePlayer.GPlayerManager;
 import game.Undead.UndeadManager;
 import org.bukkit.Bukkit;
@@ -20,6 +21,7 @@ public class NomadSurvival extends JavaPlugin {
     public static UndeadManager AI_ENTITY_MANAGER;
     public static ScoreBoardManager SCOREBOARD_MANAGER;
     public static ResourcePackManager RESOURCE_PACK_MANAGER;
+    public static CustomItemManager CUSTOM_ITEM_MANAGER;
 
 
     public static World VEHICLES_WORLD;
@@ -37,6 +39,7 @@ public class NomadSurvival extends JavaPlugin {
         AI_ENTITY_MANAGER = new UndeadManager();
         G_PLAYER_MANAGER = new GPlayerManager();
         RESOURCE_PACK_MANAGER = new ResourcePackManager();
+        CUSTOM_ITEM_MANAGER = new CustomItemManager();
     }
 
 }
