@@ -2,11 +2,14 @@ package game.gamePlayer;
 
 import core.utils.Task;
 import core.utils.Util;
+import game.customitems.CustomItem;
 import net.minecraft.network.protocol.Packet;
 import org.bukkit.Location;
-import org.bukkit.Sound;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 public class GPlayer extends PlayerWrapper {
 
@@ -33,7 +36,6 @@ public class GPlayer extends PlayerWrapper {
     private static final double maxSmell = 100;
     private double smell = 0;
     private boolean undeadNameActivityEnabled = true;
-
 
     private void startGPlayerTick() {
         GPlayerTickTask = Task.repeat(5, () -> {
@@ -95,6 +97,22 @@ public class GPlayer extends PlayerWrapper {
        this.getHandle().connection.send(packet);
     }
 
+    public void giveCustomItem(CustomItem customItem, int amount) {
+        PlayerInventory inventory = getInventory();
+        ItemStack item = customItem.toItemStack();
+        item.setAmount(amount);
+
+        for (int i = 0; i < inventory.getSize(); i++) {
+            if (inventory.getItem(i) == null) {
+                inventory.setItem(i, item);
+                sendMessage("Gave item");
+                return;
+            }
+        }
+
+        getWorld().dropItemNaturally(getLocation(), item);
+        sendMessage("Your inventory was full, dropping item at your feet.");
+    }
 
     //----------------------------------------------------
     // [Default] -> Getters and Setters

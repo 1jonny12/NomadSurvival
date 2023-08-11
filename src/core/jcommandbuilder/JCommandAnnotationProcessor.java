@@ -78,6 +78,13 @@ public class JCommandAnnotationProcessor {
         StringBuilder argumentParameters = new StringBuilder();
 
         int parameterTracker = 1;
+        if (parameters.length-1 < arguments.size()) {
+            Util.ERROR_REPORTER.reportToConsole(
+                    "Incorrect parameter amount for command method " + method.getName() + " in class " + commandClass.getSimpleName(),
+                    "Expected amount of parameters: " + parameters.length + " Parameters received: " + (arguments.size()-1));
+            return false;
+        }
+
         for (JArgument<?> jArgument : arguments) {
             // -1 because JCommandSender is the 1st parameter.
 
