@@ -6,7 +6,7 @@ public class StaticJTabProvider implements JTabProvider{
 
     private final String[] tabs;
 
-    public StaticJTabProvider(String[] tabs) {
+    public StaticJTabProvider(String... tabs) {
         this.tabs = tabs;
     }
 

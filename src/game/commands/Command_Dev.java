@@ -1,5 +1,6 @@
 package game.commands;
 
+import core.jcommandbuilder.JArgument.JArg;
 import core.jcommandbuilder.JCommand;
 import core.jcommandbuilder.JCommandPlayerOnly;
 import core.jcommandbuilder.JCommandSender;
