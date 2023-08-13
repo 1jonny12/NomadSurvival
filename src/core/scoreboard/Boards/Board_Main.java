@@ -4,7 +4,6 @@ import core.scoreboard.SBoard;
 import core.scoreboard.ScoreBoardManager;
 import game.NomadSurvival;
 import game.gamePlayer.GPlayer;
-import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer;
 import org.bukkit.scoreboard.Scoreboard;
 
 public class Board_Main extends SBoard {
@@ -29,7 +28,7 @@ public class Board_Main extends SBoard {
         updateStaticLine(scoreboard,  1, "\uE036" + NomadSurvival.RESOURCE_PACK_MANAGER.getTexturedProgressBar().getBar((int) gPlayer.getSmell(), (int) gPlayer.getMaxSmell()),"");
         updateStaticLine(scoreboard,  2, "\uE035" + NomadSurvival.RESOURCE_PACK_MANAGER.getTexturedProgressBar().getBar(gPlayer.getNoise().getTotalNoise(), 400),"");
 
-        CraftPlayer
+
 
     }
 

@@ -3,9 +3,6 @@ package game.customitems;
 import core.nbtTag.NbtTag;
 import core.utils.Util;
 import game.customitems.Functions.Function_Clickable;
-import jline.internal.Nullable;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Item;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -27,8 +24,8 @@ public class CustomItemManager {
         loadCustomItems();
     }
 
-    public void handleItemListener(PlayerInteractEvent event) {
-        CustomItem clickedItem = getCustomItem(event.getItem());
+    public void handleItemListener(PlayerInteractEvent e) {
+        CustomItem clickedItem = getCustomItem(e.getItem());
 
         if (clickedItem.isNothing()) {
             return;
@@ -38,12 +35,12 @@ public class CustomItemManager {
             return;
         }
 
-        Action eventAction = event.getAction();
+        Action eventAction = e.getAction();
 
         if (eventAction == Action.LEFT_CLICK_AIR || eventAction == Action.LEFT_CLICK_BLOCK) {
-            clickable.onLeftClick();
+            clickable.onLeftClick(e);
         } else if (eventAction == Action.RIGHT_CLICK_AIR || eventAction == Action.RIGHT_CLICK_BLOCK) {
-            clickable.onRightClick();
+            clickable.onRightClick(e);
         }
     }
 

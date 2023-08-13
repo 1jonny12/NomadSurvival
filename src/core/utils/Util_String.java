@@ -52,6 +52,11 @@ public class Util_String {
 
     public ArrayList<String> formatStringList(ArrayList<String> list) {
         ArrayList<String> formattedStrings = new ArrayList<>();
+
+        if (list == null) {
+            return formattedStrings;
+        }
+
         for (String s : list) {
             formattedStrings.add(formatString(s));
         }

@@ -20,10 +20,4 @@ public class Nothing_Item extends CustomItem {
         return "Nothing ";
     }
 
-    @Override
-    public int getStackSize() {
-        return 0;
-    }
-
-
 }

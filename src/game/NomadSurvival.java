@@ -51,7 +51,6 @@ public class NomadSurvival extends JavaPlugin {
     public Entity rayTraceEntitiesWithParabolicArc(Player player, double maxDistance, double angleDegrees, double initialVelocity, double gravity) {
         Location playerLocation = player.getEyeLocation();
         Vector playerDirection = playerLocation.getDirection().normalize();
-        Location rayLocation = playerLocation.clone();
         Vector rayVelocity = playerDirection.clone().multiply(initialVelocity);
 
         double angleRadians = Math.toRadians(angleDegrees);
@@ -62,26 +61,19 @@ public class NomadSurvival extends JavaPlugin {
             double y = rayVelocity.getY() * time - 0.5 * gravity * time * time;
             double z = rayVelocity.getZ() * time;
 
-            rayLocation.add(x, y, z);
+            playerLocation.add(x, y, z);
 
-            boolean hitEntity = false;
-
-            for (Entity entity : rayLocation.getWorld().getEntities()) {
+            for (Entity entity : playerLocation.getWorld().getEntities()) {
                 BoundingBox entityBoundingBox = entity.getBoundingBox();
-                if (entityBoundingBox.contains(rayLocation.toVector())) {
-                    hitEntity = true;
-                    break;
+                if (entityBoundingBox.contains(playerLocation.toVector())) {
+                    return entity;
                 }
-            }
-
-            if (hitEntity) {
-                return entity;
             }
 
             // Adjust step size based on distance to the nearest entity
             double minDistance = Double.MAX_VALUE;
-            for (Entity entity : rayLocation.getWorld().getEntities()) {
-                double distance = entity.getLocation().distance(rayLocation);
+            for (Entity entity : playerLocation.getWorld().getEntities()) {
+                double distance = entity.getLocation().distance(playerLocation);
                 minDistance = Math.min(minDistance, distance);
             }
 

@@ -1,6 +1,7 @@
 package game.customitems;
 
 import core.jcommandbuilder.JTabProvider;
+import game.customitems.items.Glock_Item;
 import game.customitems.items.Nothing_Item;
 import game.customitems.items.TestItem;
 
@@ -10,6 +11,7 @@ import java.util.List;
 public enum ItemType implements ICustomItem, JTabProvider {
 
     TEST_ITEM(new TestItem()),
+    Glock_Gun(new Glock_Item()),
     NOTHING(new Nothing_Item()); //air item
 
     private final CustomItem customItem;
