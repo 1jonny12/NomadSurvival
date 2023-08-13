@@ -15,7 +15,7 @@ public class RayTrace {
     private final static int MAX_ITERATIONS = 1000;
     private double stepSize = 0.25;
     private double maxDistance = 100.0;
-    private boolean terminateOnBlockHit = false;
+    private boolean terminateOnBlockHit = true;
 
     @Nullable
     public RayTraceResult castRay(Location startLocation, Vector rayDirection) {
@@ -33,7 +33,7 @@ public class RayTrace {
             rayLocation.add(rayDirection).add(0, -counter * 0.001, 0);
             rayLocation.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, rayLocation, 1);
 
-            for (Entity entity : rayLocation.getWorld().getNearbyEntities(rayLocation, 1, 1, 1)) {
+            for (Entity entity : rayLocation.getWorld().getNearbyEntities(rayLocation, 0.1, 0.1, 0.1)) {
                 if (entity instanceof Player) continue;
                 if (!entity.getBoundingBox().contains(rayLocation.toVector())) continue;
                 return new RayTraceResult(null, entity);

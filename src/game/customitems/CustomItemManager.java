@@ -27,21 +27,17 @@ public class CustomItemManager {
     public void handleItemListener(PlayerInteractEvent e) {
         CustomItem clickedItem = getCustomItem(e.getItem());
 
-        if (clickedItem.isNothing()) {
-            return;
-        }
+        if (clickedItem.isNothing()) return;
 
-        if (!(clickedItem instanceof Function_Clickable clickable)) {
-            return;
-        }
+
+        if (!(clickedItem instanceof Function_Clickable clickable)) return;
 
         Action eventAction = e.getAction();
 
-        if (eventAction == Action.LEFT_CLICK_AIR || eventAction == Action.LEFT_CLICK_BLOCK) {
+        if (eventAction == Action.LEFT_CLICK_AIR || eventAction == Action.LEFT_CLICK_BLOCK)
             clickable.onLeftClick(e);
-        } else if (eventAction == Action.RIGHT_CLICK_AIR || eventAction == Action.RIGHT_CLICK_BLOCK) {
+        else if (eventAction == Action.RIGHT_CLICK_AIR || eventAction == Action.RIGHT_CLICK_BLOCK)
             clickable.onRightClick(e);
-        }
     }
 
     public void loadCustomItems() {
@@ -53,23 +49,13 @@ public class CustomItemManager {
     public CustomItem getCustomItem(ItemStack itemStack) {
         Object nbtTagValue = Util.NBT_MANAGER.getTag(itemStack, CUSTOM_ITEM_IDENTIFIER);
 
-        if (nbtTagValue == null) {
-            return ItemType.NOTHING.toCustomItem();
-        }
+        if (nbtTagValue == null) return ItemType.NOTHING.toCustomItem();
 
         for (CustomItem customItem : loadedCustomItems.values()) {
-            if (customItem.getUniqueID().equals(nbtTagValue)) {
-                return customItem;
-            }
+            if (customItem.getUniqueID().equals(nbtTagValue)) return customItem;
         }
 
         return ItemType.NOTHING.toCustomItem();
-    }
-
-    // getters
-
-    public HashMap<String, CustomItem> getLoadedCustomItems() {
-        return loadedCustomItems;
     }
 
 }

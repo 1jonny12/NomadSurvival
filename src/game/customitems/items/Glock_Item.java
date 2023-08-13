@@ -37,9 +37,11 @@ public class Glock_Item extends CustomItem implements Function_Lore, Function_Cl
         RayTrace rayTrace = new RayTrace();
         RayTraceResult result = rayTrace.castRay(startLocation, rayDirection);
 
-        if (result.getBlock() == null) {
+        if (result == null) return;
+
+        if (result.block() == null) {
             Bukkit.broadcastMessage("Hit an entity");
-        } else if (result.getEntity() == null) {
+        } else if (result.entity() == null) {
             Bukkit.broadcastMessage("Hit a block");
         } else {
             Bukkit.broadcastMessage("idk what happened");
