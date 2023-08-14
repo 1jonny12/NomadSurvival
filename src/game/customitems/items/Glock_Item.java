@@ -40,7 +40,7 @@ public class Glock_Item extends CustomItem implements Function_Lore, Function_Cl
         if (result == null) return;
 
         if (result.block() == null) {
-            Bukkit.broadcastMessage("Hit an entity");
+            Bukkit.broadcastMessage("Hit an entity. Headshot: " + result.wasHeadshot());
         } else if (result.entity() == null) {
             Bukkit.broadcastMessage("Hit a block");
         } else {

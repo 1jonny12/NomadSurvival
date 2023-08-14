@@ -30,7 +30,7 @@ public class Events implements Listener {
 
     @EventHandler
     public void  Event_EntitySpawnEvent(EntitySpawnEvent e){
-        e.setCancelled(!e.getEntity().isCustomNameVisible());
+        //e.setCancelled(!e.getEntity().isCustomNameVisible());
 
     }
 

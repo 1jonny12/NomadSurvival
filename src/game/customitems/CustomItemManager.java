@@ -28,8 +28,6 @@ public class CustomItemManager {
         CustomItem clickedItem = getCustomItem(e.getItem());
 
         if (clickedItem.isNothing()) return;
-
-
         if (!(clickedItem instanceof Function_Clickable clickable)) return;
 
         Action eventAction = e.getAction();
