@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 public class Glock_Item extends CustomItem implements Function_Lore, Function_Clickable {
 
+
+
     @Override
     public int getModelID() {
         return 0;
@@ -35,24 +37,16 @@ public class Glock_Item extends CustomItem implements Function_Lore, Function_Cl
         Vector rayDirection = e.getPlayer().getEyeLocation().getDirection();
 
         RayTrace rayTrace = new RayTrace();
+        rayTrace.terminateOnBlockHit().terminateOnEntityHit();
+
         RayTraceResult result = rayTrace.castRay(startLocation, rayDirection);
-
-        if (result == null) return;
-
-        if (result.block() == null) {
-            Bukkit.broadcastMessage("Hit an entity. Headshot: " + result.wasHeadshot());
-        } else if (result.entity() == null) {
-            Bukkit.broadcastMessage("Hit a block");
-        } else {
-            Bukkit.broadcastMessage("idk what happened");
-        }
-
     }
 
     @Override
     public void onLeftClick(PlayerInteractEvent e) {
 
     }
+
 
 
 }
