@@ -1,5 +1,6 @@
 package game.Undead;
 
+import core.utils.EntityMetaDataBuilder;
 import core.utils.Util;
 import game.NomadSurvival;
 import game.gamePlayer.GPlayer;
@@ -170,7 +171,7 @@ public class UndeadBehaviour {
 
     public void updateBehaviourName(){
 
-        List<SynchedEntityData.DataValue<?>> data = Util.ENTITY_META_DATA_BUILDER.setCustomName(behaviourType.name()).createData();
+        List<SynchedEntityData.DataValue<?>> data = new EntityMetaDataBuilder().setCustomName(behaviourType.name()).createData();
 
         NomadSurvival.G_PLAYER_MANAGER.forAllGPlayer(gPlayer -> {
 

@@ -3,12 +3,14 @@ package game.customitems.items;
 import game.customitems.CustomItem;
 import game.customitems.Functions.Function_Clickable;
 import game.customitems.Functions.Function_Lore;
+import net.minecraft.world.entity.monster.Zombie;
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.ArrayList;
 
 public class TestItem extends CustomItem implements Function_Clickable, Function_Lore {
+
     @Override
     public int getModelID() {
         return 0;

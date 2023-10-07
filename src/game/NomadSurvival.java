@@ -1,27 +1,24 @@
 package game;
 
 import core.scoreboard.ScoreBoardManager;
+import core.utils.Util;
 import game.ResourcePack.ResourcePackManager;
 import game.commands.CommandRegister;
 import game.customitems.CustomItemManager;
 import game.gamePlayer.GPlayerManager;
 import game.Undead.UndeadManager;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.BoundingBox;
-import org.bukkit.util.Vector;
 
 public class NomadSurvival extends JavaPlugin {
 
 
     public static Plugin PLUGIN;
 
+    public static SecureMode SECURE_MODE;
     public static GPlayerManager G_PLAYER_MANAGER;
     public static UndeadManager AI_ENTITY_MANAGER;
     public static ScoreBoardManager SCOREBOARD_MANAGER;
@@ -34,8 +31,20 @@ public class NomadSurvival extends JavaPlugin {
     @Override
     public void onEnable() {
         PLUGIN = this;
+        preload();
 
-        getServer().getPluginManager().registerEvents(new Events(), this);
+    }
+
+    public void preload() {
+        getServer().getPluginManager().registerEvents( SECURE_MODE = new SecureMode(), this);
+
+        if (isUsingRemappedJar()) {
+            load();
+        }
+    }
+
+        public void load() {
+            getServer().getPluginManager().registerEvents(new Events(), this);
 
         VEHICLES_WORLD = Bukkit.createWorld(new WorldCreator("cars"));
         new CommandRegister();
@@ -47,41 +56,21 @@ public class NomadSurvival extends JavaPlugin {
         CUSTOM_ITEM_MANAGER = new CustomItemManager();
     }
 
+    private boolean isUsingRemappedJar() {
+        try {
+            Class.forName("net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket");
+            return true;
+        } catch (ClassNotFoundException e) {
+           Util.ERROR_REPORTER.reportToConsole(
+                    "==================================================",
+                    "==================================================",
+                    "Plugin not using remapped jar... Running plugin in secure mode only.",
+                   "==================================================",
+                    "==================================================");
 
-    public Entity rayTraceEntitiesWithParabolicArc(Player player, double maxDistance, double angleDegrees, double initialVelocity, double gravity) {
-        Location playerLocation = player.getEyeLocation();
-        Vector playerDirection = playerLocation.getDirection().normalize();
-        Vector rayVelocity = playerDirection.clone().multiply(initialVelocity);
-
-        double angleRadians = Math.toRadians(angleDegrees);
-        double stepSize = 0.1; // Adjust as needed
-
-        for (double time = 0; time < maxDistance / initialVelocity; ) {
-            double x = rayVelocity.getX() * time;
-            double y = rayVelocity.getY() * time - 0.5 * gravity * time * time;
-            double z = rayVelocity.getZ() * time;
-
-            playerLocation.add(x, y, z);
-
-            for (Entity entity : playerLocation.getWorld().getEntities()) {
-                BoundingBox entityBoundingBox = entity.getBoundingBox();
-                if (entityBoundingBox.contains(playerLocation.toVector())) {
-                    return entity;
-                }
-            }
-
-            // Adjust step size based on distance to the nearest entity
-            double minDistance = Double.MAX_VALUE;
-            for (Entity entity : playerLocation.getWorld().getEntities()) {
-                double distance = entity.getLocation().distance(playerLocation);
-                minDistance = Math.min(minDistance, distance);
-            }
-
-            // You can adjust the multiplier as needed
-            time += Math.max(stepSize, minDistance * 0.2);
+            SECURE_MODE.enableSecureMode("Plugin not using remapped jar");
+            return false;
         }
-
-        return null;
     }
 
 
